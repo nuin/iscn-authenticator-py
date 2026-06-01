@@ -1,0 +1,40 @@
+# Changelog
+
+All notable changes to `iscn-authenticator` are recorded here. The format
+roughly follows [Keep a Changelog](https://keepachangelog.com/); versions
+are [SemVer](https://semver.org/) and on `0.x` a breaking change bumps
+the minor.
+
+Sections per release: **Added**, **Changed**, **Fixed**, **Removed**.
+
+---
+
+## 0.2.0 — 2026-04
+
+First release tracked in this changelog. First release published to PyPI.
+
+### Added
+- ISCN 2024 grammar coverage: numerical aberrations (`+`/`-`), deletions
+  (`del`), duplications (`dup`), translocations (`t`), inversions
+  (`inv`), insertions (`ins`), isochromosomes (`i`/`idic`),
+  derivatives (`der`/`dic`), rings (`r`), Robertsonian translocations
+  (`rob`), triplications (`trp`), marker chromosomes (`mar`),
+  uncertainty (`?`), inheritance suffixes (`mat`/`pat`/`dn`),
+  mosaicism (cell lines split on `/`).
+- AST + rule-engine architecture (`KaryotypeParser` →
+  `KaryotypeAST` → `RuleEngine`); rules split into chromosome-level
+  and abnormality-level lists.
+- `validate_karyotype(s) -> ValidationResult` (`{ valid, errors, parsed }`)
+  and `is_valid_karyotype(s) -> bool` convenience wrapper.
+- Shared fixture corpus at `fixtures/validity.json` exercising both this
+  library and the TypeScript port.
+
+### Deferred to a later release
+- Curated explanation lookup (clinical-condition database mapping karyotype
+  signatures to authoritative summaries). The template-based explanation
+  via `generate_template_explanation` and `explain` is included; the
+  curated lookup will return in a future minor release.
+
+### Notes
+- Zero runtime dependencies; standard library only.
+- Supports Python 3.10–3.13.
