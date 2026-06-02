@@ -9,6 +9,19 @@ Sections per release: **Added**, **Changed**, **Fixed**, **Removed**.
 
 ---
 
+## 0.2.1 — 2026-06
+
+### Changed
+- Internal refactor of `parser.py` and `rules/abnormality.py`: extracted
+  regex patterns, per-type abnormality parsers, and validator
+  implementations into private modules; replaced the monolithic
+  abnormality dispatch with a small prefix-driven table. Public API
+  (`KaryotypeParser`, `ParseError`, rule instances) is unchanged.
+- Project homepage URL updated to
+  `https://bioinformat.org/projects/iscn-authenticator`.
+
+---
+
 ## 0.2.0 — 2026-04
 
 First release tracked in this changelog. First release published to PyPI.

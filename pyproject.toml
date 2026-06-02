@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "iscn-authenticator"
-version = "0.2.0"
+version = "0.2.1"
 description = "ISCN 2024 karyotype validation — parser, rule engine, and types. Pure Python, zero runtime dependencies."
 readme = "README.md"
 requires-python = ">=3.10"
