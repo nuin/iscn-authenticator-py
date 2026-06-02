@@ -38,7 +38,7 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://iscn.bioinformat.com"
+Homepage = "https://bioinformat.org/projects/iscn-authenticator"
 Repository = "https://github.com/nuin/iscn-authenticator-py"
 Issues = "https://github.com/nuin/iscn-authenticator-py/issues"
 Changelog = "https://github.com/nuin/iscn-authenticator-py/blob/master/CHANGELOG.md"
