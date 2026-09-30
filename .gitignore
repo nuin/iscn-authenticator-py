@@ -23,6 +23,7 @@ htmlcov/
 .tox/
 .mypy_cache/
 .ruff_cache/
+.hypothesis/
 
 # Editors / OS
 .idea/

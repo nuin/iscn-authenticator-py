@@ -9,6 +9,17 @@ Sections per release: **Added**, **Changed**, **Fixed**, **Removed**.
 
 ---
 
+## Unreleased
+
+### Added
+- Hypothesis property tests (`tests/test_properties.py`) that generate
+  valid and invalid karyotypes; `hypothesis` is now in the `test` extra.
+
+### Fixed
+- `validate_karyotype` no longer raises `ValueError` on chromosome counts
+  made of non-ASCII digit characters such as `²`; counts are now ASCII-only,
+  matching the TypeScript port.
+
 ## 0.2.1 — 2026-06
 
 ### Changed
