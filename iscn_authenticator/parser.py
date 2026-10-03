@@ -116,7 +116,9 @@ class KaryotypeParser(_AbnormalityParsers):
         count_str = count_str.strip()
         if "~" in count_str:
             return count_str
-        if not count_str.isdigit():
+        # ASCII-only, matching the TypeScript port's /^\d+$/; str.isdigit() also
+        # accepts characters such as '²' that int() cannot parse.
+        if not (count_str.isascii() and count_str.isdigit()):
             raise ParseError(f"Invalid chromosome count: '{count_str}' is not a number")
         return int(count_str)
 

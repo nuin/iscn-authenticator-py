@@ -45,10 +45,9 @@ Changelog = "https://github.com/nuin/iscn-authenticator-py/blob/master/CHANGELOG
 Documentation = "https://github.com/nuin/iscn-authenticator-py#readme"
 
 [project.optional-dependencies]
-# Stdlib-only test runner; this exists so `pip install .[test]` is a no-op
-# and downstream packagers can install a single extra to confirm the test
-# suite is wired up. unittest itself is part of the stdlib.
-test = []
+# The suite runs on stdlib unittest. Hypothesis powers the property-based
+# tests in tests/test_properties.py, which are skipped when it is absent.
+test = ["hypothesis>=6.100"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["iscn_authenticator"]

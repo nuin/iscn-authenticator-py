@@ -50,7 +50,7 @@ Implementation tracks the 2024 edition of the International System for Human Cyt
 
 ## Cross-implementation parity
 
-A TypeScript port (`@iscn/core`) lives in the [iscn-authenticator monorepo](https://github.com/nuin/iscn-authenticator) under `packages/core/`, and consumes the same fixture corpus shipped in this repo at `fixtures/validity.json`. Parity is enforced via CI in both repos.
+A TypeScript port (`@iscn/core`) lives in the [iscn-authenticator monorepo](https://github.com/nuin/iscn-authenticator) under `packages/core/`, and consumes the same fixture corpus shipped in this repo at `fixtures/validity.json`. Parity is enforced via CI in both repos. The Hypothesis property tests in `tests/test_properties.py` generate their own cases and never write to the shared corpus.
 
 ## Contributing
 
@@ -58,6 +58,7 @@ A TypeScript port (`@iscn/core`) lives in the [iscn-authenticator monorepo](http
 git clone https://github.com/nuin/iscn-authenticator-py.git
 cd iscn-authenticator-py
 pip install pre-commit ruff
+pip install -e ".[test]"   # hypothesis, for tests/test_properties.py
 pre-commit install
 python3 -m unittest discover tests
 ```
