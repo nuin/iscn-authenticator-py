@@ -14,7 +14,7 @@ from iscn_authenticator._parser_patterns import (
     PSEUDODICENTRIC_PATTERN,
     SEX_CHROMOSOMES_PATTERN,
 )
-from iscn_authenticator.models import Abnormality, CellLine, KaryotypeAST
+from iscn_authenticator.models import Abnormality, CellLine, KaryotypeAST, Modifiers
 
 __all__ = ["KaryotypeParser", "ParseError"]
 
@@ -55,9 +55,14 @@ class KaryotypeParser(_AbnormalityParsers):
             raise ParseError("Karyotype string is empty")
 
         karyotype = karyotype.strip()
-        if "/" in karyotype:
-            return self._parse_mosaic(karyotype)
-        return self._parse_single_karyotype(karyotype)
+        mosaic = karyotype.startswith("mos ")
+        chimera = karyotype.startswith("chi ")
+        if mosaic or chimera:
+            karyotype = karyotype[4:]
+        ast = self._parse_mosaic(karyotype) if "/" in karyotype else self._parse_single_karyotype(karyotype)
+        if mosaic or chimera:
+            ast.modifiers = Modifiers(mosaic=mosaic, chimera=chimera)
+        return ast
 
     def _parse_single_karyotype(
         self, karyotype: str, extract_count: bool = False
@@ -66,9 +71,16 @@ class KaryotypeParser(_AbnormalityParsers):
         count = 0
         if extract_count:
             count_match = CELL_LINE_COUNT_PATTERN.match(karyotype)
+            if not count_match and ("[" in karyotype or "]" in karyotype):
+                raise ParseError("Cell count must be a positive safe integer in square brackets")
             if count_match:
                 karyotype = count_match.group(1)
-                count = int(count_match.group(2))
+                digits = count_match.group(2).lstrip("0") or "0"
+                if len(digits) > 16:
+                    raise ParseError("Cell count must be a positive safe integer in square brackets")
+                count = int(digits)
+                if count > 9_007_199_254_740_991:
+                    raise ParseError("Cell count must be a positive safe integer in square brackets")
 
         if "," not in karyotype:
             raise ParseError("Missing comma separator between chromosome count and sex chromosomes")
@@ -89,19 +101,29 @@ class KaryotypeParser(_AbnormalityParsers):
 
     def _parse_mosaic(self, karyotype: str) -> KaryotypeAST:
         """Parse a mosaic karyotype with multiple cell lines."""
-        cell_lines = []
-        for line_str in karyotype.split("/"):
-            ast, count = self._parse_single_karyotype(line_str.strip(), extract_count=True)
-            cell_lines.append(
-                CellLine(
-                    chromosome_count=ast.chromosome_count,
-                    sex_chromosomes=ast.sex_chromosomes,
-                    abnormalities=ast.abnormalities,
-                    count=count,
-                    is_donor=False,
+        groups = karyotype.split("//")
+        if len(groups) > 2 or "///" in karyotype:
+            raise ParseError("Use one double slash to separate recipient and donor cell lines")
+        cell_lines: list[CellLine] = []
+        for group_index, group in enumerate(groups):
+            if not group.strip() and len(groups) == 2:
+                continue
+            for line_str in group.split("/"):
+                try:
+                    ast, count = self._parse_single_karyotype(line_str.strip(), extract_count=True)
+                except ParseError as error:
+                    raise ParseError(f"Cell line {len(cell_lines) + 1}: {error}") from error
+                cell_lines.append(
+                    CellLine(
+                        chromosome_count=ast.chromosome_count,
+                        sex_chromosomes=ast.sex_chromosomes,
+                        abnormalities=ast.abnormalities,
+                        count=count,
+                        is_donor=group_index == 1,
+                    )
                 )
-            )
-
+        if not cell_lines:
+            raise ParseError("At least one cell line is required")
         first = cell_lines[0]
         return KaryotypeAST(
             chromosome_count=first.chromosome_count,

@@ -12,10 +12,18 @@ Sections per release: **Added**, **Changed**, **Fixed**, **Removed**.
 ## Unreleased
 
 ### Added
+- Optional `mos`/`chi` prefixes and the transplant `//` separator, including
+  donor-only and recipient-only forms. Multiple abnormal-clone ordering and
+  clinical relationships still require specimen context and manual review.
 - Hypothesis property tests (`tests/test_properties.py`) that generate
   valid and invalid karyotypes; `hypothesis` is now in the `test` extra.
 
 ### Fixed
+- Every cell line now receives chromosome and abnormality checks. Errors include
+  the one-based cell-line number; the parsed AST and input order are preserved.
+- Multiple-line validation requires positive metaphase counts and checks that
+  normal lines come last, except across recipient/donor boundaries. Normal XX/XY
+  lines are ordered by count, then XX before XY when counts are equal.
 - `validate_karyotype` no longer raises `ValueError` on chromosome counts
   made of non-ASCII digit characters such as `²`; counts are now ASCII-only,
   matching the TypeScript port.

@@ -177,6 +177,15 @@ class TestGeneratedValidKaryotypes(unittest.TestCase):
         )
     )
     def test_mosaic_cell_lines(self, lines):
+        # Put normal lines last, then order those by size and XX before XY.
+        lines = sorted(
+            lines,
+            key=lambda item: (
+                item[0][0] in {"46,XX", "46,XY"},
+                -item[1],
+                item[0][0],
+            ),
+        )
         text = "/".join(f"{k[0]}[{n}]" for k, n in lines)
         ast = PARSER.parse(text)
         self.assertEqual(len(ast.cell_lines), len(lines))

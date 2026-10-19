@@ -8,7 +8,7 @@ can share patterns without circular imports.
 import re
 
 # Top-level structure
-CELL_LINE_COUNT_PATTERN = re.compile(r"^(.+?)\[(\d+)\]$")
+CELL_LINE_COUNT_PATTERN = re.compile(r"^(.+?)\[([0-9]+)\]$")
 SEX_CHROMOSOMES_PATTERN = re.compile(r"^[XYU]+$")
 
 # Breakpoints

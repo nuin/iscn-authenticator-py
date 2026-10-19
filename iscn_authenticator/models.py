@@ -51,7 +51,7 @@ class Modifiers:
 class CellLine:
     """Represents a cell line in mosaic/chimera notation."""
 
-    chromosome_count: int
+    chromosome_count: int | str
     sex_chromosomes: str
     abnormalities: list[Abnormality]
     count: int  # Number in brackets [10]
