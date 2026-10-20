@@ -58,6 +58,7 @@ include = [
   "fixtures/",
   "tests/",
   "README.md",
+  "NOTATION_COVERAGE.md",
   "LICENSE",
   "CHANGELOG.md",
   "pyproject.toml",

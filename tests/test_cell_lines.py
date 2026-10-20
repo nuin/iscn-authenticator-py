@@ -12,7 +12,7 @@ class TestCellLines(unittest.TestCase):
         cases = [
             ("47,XX,+21[10]/47,XX,+99[5]", "Cell line 2: Invalid chromosome '99'"),
             ("47,XX,+21[5]/46,Y[10]", "Cell line 2: Sex chromosomes"),
-            ("47,XX,+21[5]/45,X[5]/100,XX[10]", "Cell line 3: Chromosome count 100"),
+            ("47,XX,+21[5]/45,X[5]/0,XX[10]", "Cell line 3: Chromosome count 0"),
         ]
         for notation, error in cases:
             with self.subTest(notation=notation):

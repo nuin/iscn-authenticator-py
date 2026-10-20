@@ -8,6 +8,7 @@ used by the rule engine.
 
 from iscn_authenticator.rules import _abnormality_validators as v
 from iscn_authenticator.rules.base import Rule
+from iscn_authenticator.rules.routine import misplaced_clone_rule, structural_reference_rule
 
 # Re-exported for backwards compatibility with prior versions of this module.
 VALID_CHROMOSOMES = v.VALID_CHROMOSOMES
@@ -189,6 +190,8 @@ incomplete_breakpoint_rule = Rule(
 
 ALL_ABNORMALITY_RULES = [
     numerical_chromosome_valid_rule,
+    structural_reference_rule,
+    misplaced_clone_rule,
     breakpoint_arm_valid_rule,
     inversion_two_breakpoints_rule,
     translocation_breakpoint_count_rule,

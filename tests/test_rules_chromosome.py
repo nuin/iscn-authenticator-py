@@ -32,14 +32,14 @@ class TestChromosomeCountRules(unittest.TestCase):
         self.assertEqual(errors, [])
 
     def test_count_too_low(self):
-        ast = KaryotypeAST(20, "XX", [], None, None)
+        ast = KaryotypeAST(0, "XX", [], None, None)
         errors = chromosome_count_range_rule.validate(ast, ast)
-        self.assertIn("between 23 and 92", errors[0])
+        self.assertIn("positive safe integer", errors[0])
 
     def test_count_too_high(self):
-        ast = KaryotypeAST(100, "XX", [], None, None)
+        ast = KaryotypeAST(9_007_199_254_740_992, "XX", [], None, None)
         errors = chromosome_count_range_rule.validate(ast, ast)
-        self.assertIn("between 23 and 92", errors[0])
+        self.assertIn("positive safe integer", errors[0])
 
 
 class TestSexChromosomeRules(unittest.TestCase):

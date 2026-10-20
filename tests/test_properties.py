@@ -135,7 +135,20 @@ normal_bases = st.sampled_from(["46,XX", "46,XY", "45,X", "47,XXY", "47,XXX", "4
 def valid_karyotypes(draw):
     """Return (karyotype, [(type, chromosome), ...])."""
     base = draw(normal_bases)
-    abns = draw(st.lists(valid_abnormalities, max_size=3))
+    structural = st.sampled_from(
+        [
+            ("del(5)(p15)", "del", "5"),
+            ("dup(1)(q21q31)", "dup", "1"),
+            ("inv(3)(p21q26)", "inv", "3"),
+            ("t(2;8)(p21;q24)", "t", "2;8"),
+            ("r(7)(p22q36)", "r", "7"),
+            ("i(7)(q10)", "i", "7"),
+        ]
+    )
+    abns = draw(st.lists(st.one_of(numerical(), structural), max_size=3))
+    count, sex = base.split(",")
+    delta = sum(1 if a[1] == "+" else -1 if a[1] == "-" else 0 for a in abns)
+    base = f"{int(count) + delta},{sex}"
     text = ",".join([base] + [a[0] for a in abns])
     return text, [(a[1], a[2]) for a in abns]
 
@@ -233,7 +246,11 @@ class TestGeneratedInvalidKaryotypes(unittest.TestCase):
         """Only ASCII digits are accepted, as in the TypeScript port's /^\\d+$/."""
         self.assertFalse(validate_karyotype(f"{count},XX").valid)
 
-    @given(st.one_of(st.integers(min_value=0, max_value=22), st.integers(min_value=93, max_value=10_000)))
+    @given(
+        st.one_of(
+            st.integers(min_value=-10_000, max_value=0), st.integers(min_value=9_007_199_254_740_992, max_value=10**20)
+        )
+    )
     def test_count_out_of_range_rejected(self, count):
         self.assertFalse(validate_karyotype(f"{count},XX").valid)
 

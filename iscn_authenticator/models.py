@@ -1,5 +1,5 @@
 # iscn_authenticator/models.py
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -45,6 +45,17 @@ class Modifiers:
     chimera: bool = False  # chi
     constitutional: bool = False  # c suffix
     incomplete: bool = False  # inc
+    ish: str | None = None
+    arr: str | None = None
+    ogm: str | None = None
+    interphase: bool = False
+    composite: int | None = None
+
+
+@dataclass
+class CloneReference:
+    token: str
+    cell_line: int
 
 
 @dataclass
@@ -56,17 +67,24 @@ class CellLine:
     abnormalities: list[Abnormality]
     count: int  # Number in brackets [10]
     is_donor: bool = False  # For chimera: after //
+    raw: str | None = field(default=None, compare=False)
+    reference: CloneReference | None = None
+    changes: list[Abnormality] | None = None
 
 
 @dataclass
 class KaryotypeAST:
     """Abstract syntax tree for a parsed karyotype."""
 
-    chromosome_count: int | str  # int or range "45~48"
+    chromosome_count: int | str | None  # int or range "45~48"
     sex_chromosomes: str  # "XX", "XY", "X", etc.
     abnormalities: list[Abnormality]
     cell_lines: list[CellLine] | None
     modifiers: Modifiers | None
+    count: int | None = None
+    raw: str | None = field(default=None, compare=False)
+    reference: CloneReference | None = None
+    changes: list[Abnormality] | None = None
 
 
 @dataclass

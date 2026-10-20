@@ -2,57 +2,487 @@
   "$schema_version": 1,
   "description": "Shared ISCN karyotype validity corpus. Both Python (iscn_authenticator) and TypeScript (@iscn/core) runners consume this file. Any change here must pass in both runners.",
   "valid": [
-    { "input": "47,XX,+21[5]/46,XX[10]", "note": "normal line last despite higher count" },
-    { "input": "mos 45,X[5]/46,XX[10]", "note": "optional mosaic prefix" },
-    { "input": "47,XXY[5]/46,XY[10]", "note": "sex chromosome abnormality precedes normal line" },
-    { "input": "chi 46,XY[25]/46,XX[10]", "note": "normal chimeric lines ordered by size" },
-    { "input": "46,XX[10]/46,XY[10]", "note": "XX precedes XY at equal counts" },
-    { "input": "46,XX[5]//47,XY,+21[15]", "note": "donor group follows recipient despite abnormality" },
-    { "input": "46,XX[5]//47,XY,+21[15]/46,XY[2]", "note": "multiple donor lines retained" },
-    { "input": "//46,XX[20]", "note": "donor cells only" },
-    { "input": "46,XY[20]//", "note": "recipient cells only" },
-    { "input": "46,XX", "note": "normal female" },
-    { "input": "46,XY", "note": "normal male" },
-    { "input": "47,XXX", "note": "triple X" },
-    { "input": "47,XXY", "note": "Klinefelter" },
-    { "input": "47,XYY", "note": "Jacobs" },
-    { "input": "45,X", "note": "Turner" },
-    { "input": "47,XY,+21", "note": "Down" },
-    { "input": "47,XX,+13", "note": "Patau" },
-    { "input": "47,XY,+18", "note": "Edwards" },
-    { "input": "46,XX,del(5)(q13q33)", "note": "5q- interstitial deletion" },
-    { "input": "46,XY,del(7)(q22q36)", "note": "7q deletion" },
-    { "input": "46,XX,t(9;22)(q34;q11.2)", "note": "CML Philadelphia" },
-    { "input": "46,XY,t(8;14)(q24;q32)", "note": "Burkitt" },
-    { "input": "46,XX,t(15;17)(q24;q21)", "note": "APL" },
-    { "input": "46,XY,inv(3)(q21q26)", "note": "inversion with two breakpoints" },
-    { "input": "46,XX,+mar", "note": "marker chromosome" },
-    { "input": "46,XY,der(1)t(1;3)(p36;q21)", "note": "derivative" }
+    {
+      "input": "47,XX,+21[5]/46,XX[10]",
+      "note": "normal line last despite higher count"
+    },
+    {
+      "input": "mos 45,X[5]/46,XX[10]",
+      "note": "optional mosaic prefix"
+    },
+    {
+      "input": "47,XXY[5]/46,XY[10]",
+      "note": "sex chromosome abnormality precedes normal line"
+    },
+    {
+      "input": "chi 46,XY[25]/46,XX[10]",
+      "note": "normal chimeric lines ordered by size"
+    },
+    {
+      "input": "46,XX[10]/46,XY[10]",
+      "note": "XX precedes XY at equal counts"
+    },
+    {
+      "input": "46,XX[5]//47,XY,+21[15]",
+      "note": "donor group follows recipient despite abnormality"
+    },
+    {
+      "input": "46,XX[5]//47,XY,+21[15]/46,XY[2]",
+      "note": "multiple donor lines retained"
+    },
+    {
+      "input": "//46,XX[20]",
+      "note": "donor cells only"
+    },
+    {
+      "input": "46,XY[20]//",
+      "note": "recipient cells only"
+    },
+    {
+      "input": "46,XX",
+      "note": "normal female"
+    },
+    {
+      "input": "46,XY",
+      "note": "normal male"
+    },
+    {
+      "input": "47,XXX",
+      "note": "triple X"
+    },
+    {
+      "input": "47,XXY",
+      "note": "Klinefelter"
+    },
+    {
+      "input": "47,XYY",
+      "note": "Jacobs"
+    },
+    {
+      "input": "45,X",
+      "note": "Turner"
+    },
+    {
+      "input": "47,XY,+21",
+      "note": "Down"
+    },
+    {
+      "input": "47,XX,+13",
+      "note": "Patau"
+    },
+    {
+      "input": "47,XY,+18",
+      "note": "Edwards"
+    },
+    {
+      "input": "46,XX,del(5)(q13q33)",
+      "note": "5q- interstitial deletion"
+    },
+    {
+      "input": "46,XY,del(7)(q22q36)",
+      "note": "7q deletion"
+    },
+    {
+      "input": "46,XX,t(9;22)(q34;q11.2)",
+      "note": "CML Philadelphia"
+    },
+    {
+      "input": "46,XY,t(8;14)(q24;q32)",
+      "note": "Burkitt"
+    },
+    {
+      "input": "46,XX,t(15;17)(q24;q21)",
+      "note": "APL"
+    },
+    {
+      "input": "46,XY,inv(3)(q21q26)",
+      "note": "inversion with two breakpoints"
+    },
+    {
+      "input": "46,XX,+mar",
+      "note": "marker chromosome"
+    },
+    {
+      "input": "46,XY,der(1)t(1;3)(p36;q21)",
+      "note": "derivative"
+    },
+    {
+      "input": "46,XX[20]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "47,XX,+21[20]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "45,XY,-Y[12]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "47,XX,+X[8]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "47,XXY[10]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,+8,-7[10]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "47,XX,del(5)(q13q33),+8[10]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(p15)",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(p15.3)",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(p15.31)",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,i(7)(q10)",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "45,XX,rob(13;14)(q10;q10)",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,t(2;8)(p21;q24)[7]/47,idem,+12[4]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,t(2;8)(p21;q24)[7]/47,sl,+12[4]/48,sdl1,+9[3]/49,sdl2,+10[2]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,t(2;8)(p21;q24)[7]/47,sl,+12[4]/48,sdl,+9[3]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "69,XXY[10]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "45~48,XX,+7,-8[cp10]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "45,XY,\u2212Y[12]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(p15)\u00d72",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX.arr",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "92,XXXX[6]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "184,XXXXXXXX[4]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "22,X[3]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "93,XXXX,+8[5]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(p1?)",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(p15?)",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(p15)mat\u00d72",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "45,X,-Y[9]/46,XY[6]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "45,X,-X[7]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "45,Y,-X[11]",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,inv(5)(p15?q13)",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,ins(1;2)(p31;q21?q31)",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,ins(1)(p31?q21q31)",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,trp(1)(q21?q31)",
+      "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,qdp(1)(q21q31?)",
+      "note": "laboratory review regression; supported checks only"
+    }
   ],
   "invalid": [
-    { "input": "47,XX,+21[5]/46,XX[١٠]", "reason": "metaphase counts use ASCII digits" },
-    { "input": "47,XX,+21[10]/47,XX,+99[5]", "reason": "invalid chromosome in second line" },
-    { "input": "47,XX,+21[5]/46,Y[10]", "reason": "invalid sex complement in second line" },
-    { "input": "47,XX,+21[5]/46,XX,del(5)(p13q33)[10]", "reason": "invalid deletion in second line" },
-    { "input": "47,XX,+21[5]/45,X[5]/100,XX[10]", "reason": "out of range count in third line" },
-    { "input": "46,XX[10]/47,XX,+21[5]", "reason": "normal cell line must be last" },
-    { "input": "46,XX[10]/45,X[5]", "reason": "Turner line must precede normal line" },
-    { "input": "46,XY[10]/46,XX[10]", "reason": "XX before XY at equal counts" },
-    { "input": "46,XX[5]/46,XY[10]", "reason": "normal lines ordered by size" },
-    { "input": "47,XX,+21[5]/46,XX", "reason": "missing second metaphase count" },
-    { "input": "47,XX,+21[5]/46,XX[0]", "reason": "zero metaphase count" },
-    { "input": "47,XX,+21[5]/46,XX[-1]", "reason": "negative metaphase count" },
-    { "input": "47,XX,+21[5]/46,XX[1.5]", "reason": "fractional metaphase count" },
-    { "input": "47,XX,+21[5]/46,XX[9007199254740992]", "reason": "count exceeds cross-runtime safe integer range" },
-    { "input": "46,XX[5]//47,XY,+99[15]", "reason": "donor line receives validation rules" },
-    { "input": "//", "reason": "no cell lines" },
-    { "input": "46,XX[5]///46,XY[5]", "reason": "invalid triple slash" },
-    { "input": "46,XX[5]//46,XY[5]//46,XX[5]", "reason": "multiple donor boundaries" },
-    { "input": "", "reason": "empty string" },
-    { "input": "46", "reason": "missing sex chromosomes" },
-    { "input": "46,XX,del(5)", "reason": "del missing breakpoint specification" },
-    { "input": "46,XX,t(9;22)", "reason": "translocation missing breakpoints" },
-    { "input": "99,XX", "reason": "chromosome count out of range" },
-    { "input": "abc,XX", "reason": "non-numeric chromosome count" }
+    {
+      "input": "47,XX,+21[5]/46,XX[\u0661\u0660]",
+      "reason": "metaphase counts use ASCII digits"
+    },
+    {
+      "input": "47,XX,+21[10]/47,XX,+99[5]",
+      "reason": "invalid chromosome in second line"
+    },
+    {
+      "input": "47,XX,+21[5]/46,Y[10]",
+      "reason": "invalid sex complement in second line"
+    },
+    {
+      "input": "47,XX,+21[5]/46,XX,del(5)(p13q33)[10]",
+      "reason": "invalid deletion in second line"
+    },
+    {
+      "input": "47,XX,+21[5]/45,X[5]/0,XX[10]",
+      "reason": "zero chromosome count in third line"
+    },
+    {
+      "input": "46,XX[10]/47,XX,+21[5]",
+      "reason": "normal cell line must be last"
+    },
+    {
+      "input": "46,XX[10]/45,X[5]",
+      "reason": "Turner line must precede normal line"
+    },
+    {
+      "input": "46,XY[10]/46,XX[10]",
+      "reason": "XX before XY at equal counts"
+    },
+    {
+      "input": "46,XX[5]/46,XY[10]",
+      "reason": "normal lines ordered by size"
+    },
+    {
+      "input": "47,XX,+21[5]/46,XX",
+      "reason": "missing second metaphase count"
+    },
+    {
+      "input": "47,XX,+21[5]/46,XX[0]",
+      "reason": "zero metaphase count"
+    },
+    {
+      "input": "47,XX,+21[5]/46,XX[-1]",
+      "reason": "negative metaphase count"
+    },
+    {
+      "input": "47,XX,+21[5]/46,XX[1.5]",
+      "reason": "fractional metaphase count"
+    },
+    {
+      "input": "47,XX,+21[5]/46,XX[9007199254740992]",
+      "reason": "count exceeds cross-runtime safe integer range"
+    },
+    {
+      "input": "46,XX[5]//47,XY,+99[15]",
+      "reason": "donor line receives validation rules"
+    },
+    {
+      "input": "//",
+      "reason": "no cell lines"
+    },
+    {
+      "input": "46,XX[5]///46,XY[5]",
+      "reason": "invalid triple slash"
+    },
+    {
+      "input": "46,XX[5]//46,XY[5]//46,XX[5]",
+      "reason": "multiple donor boundaries"
+    },
+    {
+      "input": "",
+      "reason": "empty string"
+    },
+    {
+      "input": "46",
+      "reason": "missing sex chromosomes"
+    },
+    {
+      "input": "46,XX,del(5)",
+      "reason": "del missing breakpoint specification"
+    },
+    {
+      "input": "46,XX,t(9;22)",
+      "reason": "translocation missing breakpoints"
+    },
+    {
+      "input": "0,XX",
+      "reason": "chromosome count must be positive"
+    },
+    {
+      "input": "abc,XX",
+      "reason": "non-numeric chromosome count"
+    },
+    {
+      "input": "46,XX,+21",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(99)(p15)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(q99)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,t(2;99)(p21;q24)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(p99.1)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX[0]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX[-1]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX[1.5]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX[9007199254740992]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX[20][3]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,+8[4]/48,idem,+9[3]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "47,idem,+12[4]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,t(2;8)(p21;q24)[7]/47,sdl1,+12[4]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,t(2;8)(p21;q24)[7]/47,sl,+12[4]/48,sl,+9,+10[3]/49,sdl,+11[2]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,t(2;8)(p21;q24)[7]/47,idem,+12[4]/48,sl,+9,+10[3]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,idem",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,t(2;8)(p21;q24)[7]//47,idem,+12[4]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "48~45,XX[cp10]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX[cp0]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX[cp9007199254740992]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,+21[0]",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "47,XX,+99c",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,ins(1;2)(p31;q21q31;q22)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(p153)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "-1,XX",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "1.5,XX",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "9007199254740992,XX",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,ins(1;2;3;4)(p31q21q31)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,ins(1;2;3;4)(p99q99q99)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,ins(1;2)(p31q21q31)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,ins(1)(p31;q21q31)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(p101)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,rec(99)del(5)(q13q33)",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,upd(99)mat",
+      "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,del(5)(p15)\u00d72mat",
+      "reason": "laboratory review regression; supported checks only"
+    }
   ]
 }

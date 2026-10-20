@@ -66,7 +66,7 @@ def bp_matches_chromosomes(abn_type: str, label: str) -> Validator:
 
 def numerical_chromosome(ast: KaryotypeAST, abnormality: Abnormality) -> list[str]:
     """Numerical (+/-) abnormalities must reference 1-22, X, or Y."""
-    if abnormality.type not in ("+", "-"):
+    if abnormality.type not in ("+", "-", "+c", "-c"):
         return []
     if abnormality.chromosome in VALID_CHROMOSOMES:
         return []

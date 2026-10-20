@@ -70,3 +70,12 @@ First release tracked in this changelog. First release published to PyPI.
 ### Notes
 - Zero runtime dependencies; standard library only.
 - Supports Python 3.10–3.13.
+
+## Unreleased — laboratory review checks
+
+- Parse single-line metaphase counts and preserve source and related-clone provenance.
+- Check bounded autosomal totals, structural chromosome identifiers and UCSC hg38 band hierarchy.
+- Resolve unambiguous idem/sl/sdl references and expose partial validation coverage.
+- Retain polyploid counts without an artificial 23–92 restriction; defer acquired sex-chromosome totals.
+- Reject unsupported insertion layouts and malformed/unsafe numeric fields consistently across runtimes.
+- Extend shared fixtures and Hypothesis inputs for the supported checks.

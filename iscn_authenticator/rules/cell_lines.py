@@ -46,7 +46,17 @@ def validate_cell_line_order(ast: KaryotypeAST, target) -> list[str]:
     return errors
 
 
+def validate_composite_count(ast, _) -> list[str]:
+    count = ast.modifiers.composite if ast.modifiers else None
+    return (
+        ["Composite cell count must be a positive safe integer"]
+        if count is not None and not 0 < count <= 9_007_199_254_740_991
+        else []
+    )
+
+
 ALL_CELL_LINE_RULES = [
+    Rule("COMPOSITE_COUNT", "cell_lines", "Positive composite count", validate_composite_count),
     Rule(
         id="CELL_LINE_COUNTS",
         category="cell_lines",

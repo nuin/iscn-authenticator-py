@@ -72,3 +72,10 @@ python3 -m unittest discover tests
 ## License
 
 MIT — see `LICENSE`.
+
+## Validation coverage
+
+Use `get_validation_coverage(result.parsed)` alongside `validate_karyotype()`.
+Passing implemented checks does not establish complete ISCN compliance. The
+[notation coverage guide](NOTATION_COVERAGE.md) documents routine counts, clone
+references, the bundled UCSC band catalogue, and unsupported or partial notation.

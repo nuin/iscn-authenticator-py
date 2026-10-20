@@ -1,5 +1,6 @@
 """ISCN 2024 karyotype validation — parser, rule engine, and AST types."""
 
+from iscn_authenticator.coverage import get_validation_coverage
 from iscn_authenticator.main import is_valid_karyotype, validate_karyotype
 from iscn_authenticator.models import (
     Abnormality,
@@ -24,6 +25,7 @@ __all__ = [
     "Modifiers",
     "ParseError",
     "ValidationResult",
+    "get_validation_coverage",
     "is_valid_karyotype",
     "validate_karyotype",
 ]
