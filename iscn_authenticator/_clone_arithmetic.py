@@ -108,6 +108,8 @@ def expand_clone(ast: KaryotypeAST, reference: CellLine, multiplier: int) -> boo
         additions.append(change)
         value = _count_change(change)
         delta = None if delta is None or value is None else delta + value
+        if delta is not None and abs(delta) > _MAX_SAFE:
+            raise ParseError("Clone count change exceeds the safe integer limit")
     for change in additions:
         cancelled = _append_numerical(inherited, change)
         adjusted = adjusted or cancelled

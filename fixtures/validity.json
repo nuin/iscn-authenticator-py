@@ -591,6 +591,10 @@
     {
       "input": "46,XX,inv(3)(p21q26)[5]/45,idem,-t(3;5)[5]",
       "note": "Unresolved multi-chromosome subtraction requires restatement"
+    },
+    {
+      "input": "46,XX,inv(3)(p21q26)[5]/93,idemx2,+8x9007199254740991,+9x2,-8x9007199254740991[5]",
+      "note": "Unsafe intermediate arithmetic cannot round before cancellation"
     }
   ]
 }
