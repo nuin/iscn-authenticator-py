@@ -183,11 +183,11 @@
       "note": "laboratory review regression; supported checks only"
     },
     {
-      "input": "45,XY,\u2212Y[12]",
+      "input": "45,XY,−Y[12]",
       "note": "laboratory review regression; supported checks only"
     },
     {
-      "input": "46,XX,del(5)(p15)\u00d72",
+      "input": "46,XX,del(5)(p15)×2",
       "note": "laboratory review regression; supported checks only"
     },
     {
@@ -219,7 +219,7 @@
       "note": "laboratory review regression; supported checks only"
     },
     {
-      "input": "46,XX,del(5)(p15)mat\u00d72",
+      "input": "46,XX,del(5)(p15)mat×2",
       "note": "laboratory review regression; supported checks only"
     },
     {
@@ -253,6 +253,42 @@
     {
       "input": "46,XX,qdp(1)(q21q31?)",
       "note": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "47,XY,+8[10]/94,idemx2[5]",
+      "note": "Male clone doubling preserves both sex chromosomes"
+    },
+    {
+      "input": "47,XX,+8[5]/94,slx2[5]/188,sdl1x2[5]",
+      "note": "Multiplier composition through a sideline"
+    },
+    {
+      "input": "46,XX,inv(3)(p21q26)[10]/45,idem,-inv(3)[5]",
+      "note": "Structural subtraction retains monosomy"
+    },
+    {
+      "input": "46,XX,inv(3)(p21q26)[5]/91,idemx2,-inv(3)[5]",
+      "note": "One structural copy remains after doubling and loss"
+    },
+    {
+      "input": "47,XX,+8[10]/46,idem,-8[5]",
+      "note": "Autosomal gain and loss cancel in a related clone"
+    },
+    {
+      "input": "46,XX,der(5)t(5;12)",
+      "note": "Abbreviated derivative component remains partial"
+    },
+    {
+      "input": "47,XX,+der(5)t(5;12)(q13;p13)",
+      "note": "Additional derivative receives component checks"
+    },
+    {
+      "input": "45,XX,der(21;21)(q10;q10)",
+      "note": "Multi-centromere derivative header retains its bands"
+    },
+    {
+      "input": "45~47,XX,+8.cp[12]/46,XX[8]",
+      "note": "Legacy composite count stays group local"
     }
   ],
   "invalid": [
@@ -261,7 +297,7 @@
       "reason": "similar invalid prefix must not trigger interphase parsing"
     },
     {
-      "input": "47,XX,+21[5]/46,XX[\u0661\u0660]",
+      "input": "47,XX,+21[5]/46,XX[١٠]",
       "reason": "metaphase counts use ASCII digits"
     },
     {
@@ -493,8 +529,68 @@
       "reason": "laboratory review regression; supported checks only"
     },
     {
-      "input": "46,XX,del(5)(p15)\u00d72mat",
+      "input": "46,XX,del(5)(p15)×2mat",
       "reason": "laboratory review regression; supported checks only"
+    },
+    {
+      "input": "46,XX,der(5)t(5;12)(q13;p99)",
+      "note": "Nested band corruption"
+    },
+    {
+      "input": "46,XX,der(5)t(5;12)(q13)",
+      "note": "Nested breakpoint count corruption"
+    },
+    {
+      "input": "46,XX,der(5)t(5;12)(q13;p13",
+      "note": "Unclosed derivative component"
+    },
+    {
+      "input": "45,XX,der(21;21)(q10;q99)",
+      "note": "Derivative junction band corruption"
+    },
+    {
+      "input": "45~47,XX,+8[cp12]/47,XX,+8,+9[8]",
+      "note": "Ordinary clone count stays checked beside composite"
+    },
+    {
+      "input": "47,XX,+8[cp12]/48,idem,+9[8]",
+      "note": "Aggregate findings cannot supply a reference clone"
+    },
+    {
+      "input": "47,XX,+8[12]/48,idem,+9[cp8]",
+      "note": "Composite group cannot expand a reference clone"
+    },
+    {
+      "input": "47,XX,+8[5]/93,idemx2[5]",
+      "note": "Doubled clone count mismatch"
+    },
+    {
+      "input": "46,XX,inv(3)(p21q26)[5]/46,idem,-inv(3)[5]",
+      "note": "Structural loss requires a count change"
+    },
+    {
+      "input": "46,XX,inv(3)(p21q26),inv(3)(p13q21)[5]/45,idem,-inv(3)[5]",
+      "note": "Ambiguous structural subtraction"
+    },
+    {
+      "input": "46,XX,?inv(3)(p21q26)[5]/45,idem,-inv(3)[5]",
+      "note": "Uncertain inherited structure cannot be subtracted"
+    },
+    {
+      "input": "46,XX,inv(3)(p21q26)[5]/44,idem,-inv(3)x2[5]",
+      "note": "Subtraction cannot exceed inherited copies"
+    },
+    {
+      "input": "47,XX,+8[5]/94,idemx0[5]",
+      "note": "Zero clone multiplier"
+    },
+    {
+      "input": "47,XX,+8[5]/94,idemx1000000000[5]",
+      "note": "Bound expanded sex complement allocation"
+    },
+    {
+      "input": "46,XX,inv(3)(p21q26)[5]/45,idem,-t(3;5)[5]",
+      "note": "Unresolved multi-chromosome subtraction requires restatement"
     }
   ]
 }

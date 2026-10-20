@@ -12,6 +12,8 @@ STABLE_COUNT_TYPES = {"del", "dup", "inv", "t", "add", "trp", "qdp", "i", "fra",
 
 
 def expected_diploid_count(ast: KaryotypeAST) -> int | None:
+    if ast.reference and (ast.reference.multiplier or ast.reference.adjusted):
+        return None
     count = ast.chromosome_count
     if (
         not isinstance(count, int)

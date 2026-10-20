@@ -5,7 +5,12 @@ from iscn_authenticator.rules.base import Rule
 
 
 def is_normal_cell_line(line: CellLine) -> bool:
-    return line.chromosome_count == 46 and line.sex_chromosomes in {"XX", "XY"} and not line.abnormalities
+    return (
+        not line.composite
+        and line.chromosome_count == 46
+        and line.sex_chromosomes in {"XX", "XY"}
+        and not line.abnormalities
+    )
 
 
 def validate_cell_line_counts(ast: KaryotypeAST, target) -> list[str]:

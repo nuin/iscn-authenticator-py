@@ -56,6 +56,8 @@ class Modifiers:
 class CloneReference:
     token: str
     cell_line: int
+    multiplier: int | None = None
+    adjusted: bool = False
 
 
 @dataclass
@@ -70,6 +72,7 @@ class CellLine:
     raw: str | None = field(default=None, compare=False)
     reference: CloneReference | None = None
     changes: list[Abnormality] | None = None
+    composite: bool = False
 
 
 @dataclass

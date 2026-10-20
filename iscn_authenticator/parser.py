@@ -7,8 +7,6 @@ from iscn_authenticator._abnormality_parsers import _abn, _AbnormalityParsers
 from iscn_authenticator._clone_references import resolve_clone_reference
 from iscn_authenticator._errors import ParseError
 from iscn_authenticator._parser_patterns import (
-    CELL_LINE_COUNT_PATTERN,
-    DERIVATIVE_PATTERN,
     DMIN_PATTERN,
     HSR_SIMPLE_PATTERN,
     INCOMPLETE_PATTERN,
@@ -60,7 +58,7 @@ class KaryotypeParser(_AbnormalityParsers):
         karyotype = karyotype.strip()
         interphase_prefix = re.match(r"^nuc ish(?:[ \t]+|(?=\())", karyotype)
         if interphase_prefix:
-            payload = karyotype[interphase_prefix.end():]
+            payload = karyotype[interphase_prefix.end() :]
             return KaryotypeAST(None, "", [], None, Modifiers(ish=payload, interphase=True), raw=original)
         modifiers = Modifiers()
         for marker, attribute in ((".ish ", "ish"), (".arr", "arr"), (".ogm", "ogm")):
@@ -68,13 +66,6 @@ class KaryotypeParser(_AbnormalityParsers):
                 karyotype, data = karyotype.split(marker, 1)
                 setattr(modifiers, attribute, data)
                 break
-        cp = re.search(r"(?:\.cp\[([0-9]+)\]|\[cp([0-9]+)\])$", karyotype)
-        if cp:
-            digits = (cp.group(1) or cp.group(2)).lstrip("0") or "0"
-            if len(digits) > 16:
-                raise ParseError("Composite cell count must be a positive safe integer")
-            modifiers.composite = int(digits)
-            karyotype = karyotype[: cp.start()]
         mosaic = karyotype.startswith("mos ")
         chimera = karyotype.startswith("chi ")
         if mosaic or chimera:
@@ -83,6 +74,8 @@ class KaryotypeParser(_AbnormalityParsers):
         if mosaic or chimera:
             modifiers.mosaic, modifiers.chimera = mosaic, chimera
         if modifiers != Modifiers():
+            if ast.modifiers:
+                modifiers.composite = ast.modifiers.composite
             ast.modifiers = modifiers
         ast.raw = original
         return ast
@@ -93,18 +86,25 @@ class KaryotypeParser(_AbnormalityParsers):
         """Parse a single (non-mosaic) karyotype string."""
         original = karyotype
         count = 0
+        composite = False
         if extract_count or "[" in karyotype or "]" in karyotype:
-            count_match = CELL_LINE_COUNT_PATTERN.match(karyotype)
+            count_match = re.fullmatch(r"(.+?)(?:\.cp\[([0-9]+)\]|\[(cp)?([0-9]+)\])", karyotype)
             if not count_match and ("[" in karyotype or "]" in karyotype):
                 raise ParseError("Cell count must be a positive safe integer in square brackets")
             if count_match:
                 karyotype = count_match.group(1)
-                digits = count_match.group(2).lstrip("0") or "0"
+                composite = count_match[2] is not None or count_match[3] is not None
+                digits = (count_match[2] or count_match[4]).lstrip("0") or "0"
+                error = (
+                    "Composite cell count must be a positive safe integer"
+                    if composite
+                    else "Cell count must be a positive safe integer in square brackets"
+                )
                 if len(digits) > 16:
-                    raise ParseError("Cell count must be a positive safe integer in square brackets")
+                    raise ParseError(error)
                 count = int(digits)
                 if not 0 < count <= 9_007_199_254_740_991:
-                    raise ParseError("Cell count must be a positive safe integer in square brackets")
+                    raise ParseError(error)
 
         if "[" in karyotype or "]" in karyotype:
             raise ParseError("Unexpected bracketed count inside the cell line")
@@ -124,7 +124,7 @@ class KaryotypeParser(_AbnormalityParsers):
             sex_chromosomes=sex_chromosomes,
             abnormalities=abnormalities,
             cell_lines=None,
-            modifiers=None,
+            modifiers=Modifiers(composite=count) if composite else None,
         )
         resolve_clone_reference(ast, preceding or [])
         return (ast, count) if extract_count else ast
@@ -150,6 +150,7 @@ class KaryotypeParser(_AbnormalityParsers):
                 cell_lines.append(
                     CellLine(
                         raw=ast.raw,
+                        composite=bool(ast.modifiers and ast.modifiers.composite is not None),
                         reference=ast.reference,
                         changes=ast.changes,
                         chromosome_count=ast.chromosome_count,
@@ -252,8 +253,9 @@ class KaryotypeParser(_AbnormalityParsers):
         complex_outer = re.fullmatch(r"(cpx|cth|cpy)\(([^)]+)\)", part)
         if complex_outer:
             return _abn(complex_outer[1], complex_outer[2], [], part)
-        if DERIVATIVE_PATTERN.match(part):
-            return self._parse_derivative(part)
+        derivative = re.fullmatch(r"([+-]?der)\(([^)]+)\)(.+)", part)
+        if derivative:
+            return _abn(derivative[1], derivative[2], [], part)
         if DMIN_PATTERN.match(part):
             return _abn("dmin", "", [], part)
         if HSR_SIMPLE_PATTERN.match(part):

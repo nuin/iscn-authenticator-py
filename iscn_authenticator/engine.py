@@ -1,8 +1,7 @@
 # iscn_authenticator/engine.py
 """Rule engine for applying validation rules to karyotype AST."""
 
-from dataclasses import replace
-
+from iscn_authenticator._cell_line_context import cell_line_context
 from iscn_authenticator.models import KaryotypeAST, ValidationResult
 from iscn_authenticator.rules.base import Rule
 
@@ -36,13 +35,7 @@ class RuleEngine:
         errors = [error for rule in self._karyotype_rules for error in rule.validate(ast, ast)]
         if ast.cell_lines:
             for index, line in enumerate(ast.cell_lines, 1):
-                context = replace(
-                    ast,
-                    chromosome_count=line.chromosome_count,
-                    sex_chromosomes=line.sex_chromosomes,
-                    abnormalities=line.abnormalities,
-                    cell_lines=None,
-                )
+                context = cell_line_context(ast, line)
                 errors.extend(f"Cell line {index}: {error}" for error in self._validate_line(context))
         else:
             errors.extend(self._validate_line(ast))

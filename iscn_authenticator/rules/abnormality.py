@@ -8,6 +8,7 @@ used by the rule engine.
 
 from iscn_authenticator.rules import _abnormality_validators as v
 from iscn_authenticator.rules.base import Rule
+from iscn_authenticator.rules.derivative import validate_derivative_components
 from iscn_authenticator.rules.routine import misplaced_clone_rule, structural_reference_rule
 
 # Re-exported for backwards compatibility with prior versions of this module.
@@ -216,4 +217,10 @@ ALL_ABNORMALITY_RULES = [
     fission_breakpoint_rule,
     neocentromere_breakpoint_rule,
     incomplete_breakpoint_rule,
+    Rule(
+        id="ABN_DER_COMPONENTS",
+        category="abnormality",
+        description="Check recognizable derivative components without reconstructing the chromosome path",
+        validate=lambda ast, abn: validate_derivative_components(ast, abn, ALL_ABNORMALITY_RULES),
+    ),
 ]
