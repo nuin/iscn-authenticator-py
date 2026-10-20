@@ -3,6 +3,14 @@
   "description": "Shared ISCN karyotype validity corpus. Both Python (iscn_authenticator) and TypeScript (@iscn/core) runners consume this file. Any change here must pass in both runners.",
   "valid": [
     {
+      "input": "nuc ish(D21S259)x3[25/100]",
+      "note": "compact interphase prefix; assay payload retained with partial coverage"
+    },
+    {
+      "input": "nuc ish\t(D21S259)x3[25/100]",
+      "note": "tab-separated interphase prefix; nuclei fraction is not a clone separator"
+    },
+    {
       "input": "47,XX,+21[5]/46,XX[10]",
       "note": "normal line last despite higher count"
     },
@@ -248,6 +256,10 @@
     }
   ],
   "invalid": [
+    {
+      "input": "nuc ishx(D21S259)x3[25/100]",
+      "reason": "similar invalid prefix must not trigger interphase parsing"
+    },
     {
       "input": "47,XX,+21[5]/46,XX[\u0661\u0660]",
       "reason": "metaphase counts use ASCII digits"

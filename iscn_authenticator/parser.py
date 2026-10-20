@@ -58,8 +58,10 @@ class KaryotypeParser(_AbnormalityParsers):
 
         original = karyotype
         karyotype = karyotype.strip()
-        if karyotype.startswith("nuc ish "):
-            return KaryotypeAST(None, "", [], None, Modifiers(ish=karyotype[8:], interphase=True), raw=original)
+        interphase_prefix = re.match(r"^nuc ish(?:[ \t]+|(?=\())", karyotype)
+        if interphase_prefix:
+            payload = karyotype[interphase_prefix.end():]
+            return KaryotypeAST(None, "", [], None, Modifiers(ish=payload, interphase=True), raw=original)
         modifiers = Modifiers()
         for marker, attribute in ((".ish ", "ish"), (".arr", "arr"), (".ogm", "ogm")):
             if marker in karyotype:
