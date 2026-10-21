@@ -12,10 +12,18 @@ Sections per release: **Added**, **Changed**, **Fixed**, **Removed**.
 ## Unreleased
 
 ### Added
+- Optional `mos`/`chi` prefixes and the transplant `//` separator, including
+  donor-only and recipient-only forms. Multiple abnormal-clone ordering and
+  clinical relationships still require specimen context and manual review.
 - Hypothesis property tests (`tests/test_properties.py`) that generate
   valid and invalid karyotypes; `hypothesis` is now in the `test` extra.
 
 ### Fixed
+- Every cell line now receives chromosome and abnormality checks. Errors include
+  the one-based cell-line number; the parsed AST and input order are preserved.
+- Multiple-line validation requires positive metaphase counts and checks that
+  normal lines come last, except across recipient/donor boundaries. Normal XX/XY
+  lines are ordered by count, then XX before XY when counts are equal.
 - `validate_karyotype` no longer raises `ValueError` on chromosome counts
   made of non-ASCII digit characters such as `²`; counts are now ASCII-only,
   matching the TypeScript port.
@@ -62,3 +70,12 @@ First release tracked in this changelog. First release published to PyPI.
 ### Notes
 - Zero runtime dependencies; standard library only.
 - Supports Python 3.10–3.13.
+
+## Unreleased — laboratory review checks
+
+- Parse single-line metaphase counts and preserve source and related-clone provenance.
+- Check bounded autosomal totals, structural chromosome identifiers and UCSC hg38 band hierarchy.
+- Resolve unambiguous idem/sl/sdl references and expose partial validation coverage.
+- Retain polyploid counts without an artificial 23–92 restriction; defer acquired sex-chromosome totals.
+- Reject unsupported insertion layouts and malformed/unsafe numeric fields consistently across runtimes.
+- Extend shared fixtures and Hypothesis inputs for the supported checks.

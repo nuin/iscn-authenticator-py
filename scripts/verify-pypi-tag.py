@@ -54,7 +54,7 @@ def main() -> int:
 
     if tag_version != pkg_version:
         print(
-            f"verify-pypi-tag: tag version ({tag_version}) does not match " f"pyproject.toml ({pkg_version}).",
+            f"verify-pypi-tag: tag version ({tag_version}) does not match pyproject.toml ({pkg_version}).",
             file=sys.stderr,
         )
         return 1

@@ -8,13 +8,13 @@ can share patterns without circular imports.
 import re
 
 # Top-level structure
-CELL_LINE_COUNT_PATTERN = re.compile(r"^(.+?)\[(\d+)\]$")
+CELL_LINE_COUNT_PATTERN = re.compile(r"^(.+?)\[([0-9]+)\]$")
 SEX_CHROMOSOMES_PATTERN = re.compile(r"^[XYU]+$")
 
 # Breakpoints
-BREAKPOINT_PATTERN = re.compile(r"^([pq])(\d+)(?:\.(\d+))?$")
-DOUBLE_BREAKPOINT_PATTERN = re.compile(r"^([pq]\d+(?:\.\d+)?)([pq]\d+(?:\.\d+)?)$")
-TRIPLE_BREAKPOINT_PATTERN = re.compile(r"^([pq]\d+(?:\.\d+)?)([pq]\d+(?:\.\d+)?)([pq]\d+(?:\.\d+)?)$")
+BREAKPOINT_PATTERN = re.compile(r"^([pq])([1-9][0-9]?)(?:\.([0-9]+))?(\?)?$")
+DOUBLE_BREAKPOINT_PATTERN = re.compile(r"^([pq]\d+(?:\.\d+)?\??)([pq]\d+(?:\.\d+)?\??)$")
+TRIPLE_BREAKPOINT_PATTERN = re.compile(r"^([pq]\d+(?:\.\d+)?\??)([pq]\d+(?:\.\d+)?\??)([pq]\d+(?:\.\d+)?\??)$")
 
 # Numerical abnormalities
 NUMERICAL_ABNORMALITY_PATTERN = re.compile(r"^([+-])(\d{1,2}|[XY])$")

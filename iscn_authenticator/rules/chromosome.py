@@ -1,8 +1,11 @@
 # iscn_authenticator/rules/chromosome.py
 """Validation rules for chromosome count and sex chromosomes."""
 
+import re
+
 from iscn_authenticator.models import KaryotypeAST
 from iscn_authenticator.rules.base import Rule
+from iscn_authenticator.rules.routine import numerical_total_rule
 
 
 def _validate_chromosome_count_numeric(ast: KaryotypeAST, _) -> list[str]:
@@ -10,26 +13,35 @@ def _validate_chromosome_count_numeric(ast: KaryotypeAST, _) -> list[str]:
     if isinstance(ast.chromosome_count, str):
         # Range notation like "45~48" is valid
         if "~" in ast.chromosome_count:
-            return []
+            match = re.fullmatch(r"([0-9]+)~([0-9]+)", ast.chromosome_count)
+            if (
+                match
+                and max(len(match[1].lstrip("0")), len(match[2].lstrip("0"))) <= 16
+                and 0 < int(match[1].lstrip("0") or "0") <= int(match[2].lstrip("0") or "0") <= 9_007_199_254_740_991
+            ):
+                return []
+            return ["Chromosome count range must be ascending positive safe integers"]
         return [f"Chromosome count '{ast.chromosome_count}' is not numeric"]
     return []
 
 
 def _validate_chromosome_count_range(ast: KaryotypeAST, _) -> list[str]:
-    """Validate chromosome count is in valid range (23-92)."""
+    """Validate chromosome count is is a positive safe integer."""
     count = ast.chromosome_count
-    if isinstance(count, str):
+    if count is None or isinstance(count, str):
         # Skip range validation for range notation
         return []
-    if count < 23 or count > 92:
-        return [f"Chromosome count {count} is outside valid range (must be between 23 and 92)"]
+    if type(count) is not int or not 0 < count <= 9_007_199_254_740_991:
+        return [f"Chromosome count {count} must be a positive safe integer"]
     return []
 
 
 def _validate_sex_chromosomes_valid(ast: KaryotypeAST, _) -> list[str]:
     """Validate sex chromosomes contain at least one X."""
     sex = ast.sex_chromosomes
-    if sex == "U":  # Undisclosed
+    if ast.chromosome_count is None or sex == "U":  # Undisclosed
+        return []
+    if sex == "Y" and any(abn.type == "-" and abn.chromosome == "X" for abn in ast.abnormalities):
         return []
     if "X" not in sex:
         return [f"Sex chromosomes '{sex}' must contain at least one X chromosome"]
@@ -41,7 +53,7 @@ def _validate_sex_chromosomes_coherence(ast: KaryotypeAST, _) -> list[str]:
     count = ast.chromosome_count
     sex = ast.sex_chromosomes
 
-    if isinstance(count, str) or sex == "U":
+    if count is None or isinstance(count, str) or sex == "U":
         # Skip coherence check for ranges or undisclosed
         return []
 
@@ -72,7 +84,7 @@ chromosome_count_numeric_rule = Rule(
 chromosome_count_range_rule = Rule(
     id="CHR_COUNT_RANGE",
     category="chromosome_count",
-    description="Chromosome count must be between 23 and 92",
+    description="Chromosome count must be a positive safe integer",
     validate=_validate_chromosome_count_range,
 )
 
@@ -96,4 +108,5 @@ ALL_CHROMOSOME_RULES = [
     chromosome_count_range_rule,
     sex_chromosomes_valid_rule,
     sex_chromosomes_coherence_rule,
+    numerical_total_rule,
 ]

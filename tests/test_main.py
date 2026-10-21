@@ -11,7 +11,7 @@ from iscn_authenticator.main import is_valid_karyotype, validate_karyotype
 class TestIsValidKaryotype(unittest.TestCase):
     def test_valid_karyotypes(self):
         self.assertTrue(is_valid_karyotype("46,XX"))
-        self.assertTrue(is_valid_karyotype("47,XY"))
+        self.assertFalse(is_valid_karyotype("47,XY"))
         self.assertTrue(is_valid_karyotype("47,XXX"))
         self.assertTrue(is_valid_karyotype("45,X"))
         self.assertTrue(is_valid_karyotype("47,XX,+21"))

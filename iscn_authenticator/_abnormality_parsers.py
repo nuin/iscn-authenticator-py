@@ -61,8 +61,8 @@ class _AbnormalityParsers:
             band = int(region_band[1:])
         else:
             region = int(region_band)
-            band = 0
-        return Breakpoint(arm=arm, region=region, band=band, subband=subband, uncertain=False)
+            band = None
+        return Breakpoint(arm=arm, region=region, band=band, subband=subband, uncertain=match.group(4) == "?")
 
     def _parse_breakpoints(self, bp_str: str) -> list[Breakpoint]:
         """Parse one or two concatenated breakpoints like 'q21' or 'q21q31'."""
@@ -141,6 +141,8 @@ class _AbnormalityParsers:
         """Parse ins(5;2)(p14;q21q31) or ins(2)(p13q21q31)."""
         m = self._match_or_raise(INSERTION_PATTERN, part, "insertion")
         chromosomes_str, breakpoints_str = m.group(1), m.group(2)
+        if len(chromosomes_str.split(";")) not in (1, 2) or ((";" in chromosomes_str) != (";" in breakpoints_str)):
+            raise ParseError(f"Unsupported insertion chromosome/breakpoint layout: '{part}'")
 
         if ";" in breakpoints_str:
             site_str, segment_str = (s.strip() for s in breakpoints_str.split(";", 1))

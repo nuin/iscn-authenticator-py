@@ -8,12 +8,14 @@ from iscn_authenticator.explain import explain
 from iscn_authenticator.models import ValidationResult
 from iscn_authenticator.parser import KaryotypeParser, ParseError
 from iscn_authenticator.rules.abnormality import ALL_ABNORMALITY_RULES
+from iscn_authenticator.rules.cell_lines import ALL_CELL_LINE_RULES
 from iscn_authenticator.rules.chromosome import ALL_CHROMOSOME_RULES
 
 _parser = KaryotypeParser()
 _engine = RuleEngine()
 _engine.add_rules(ALL_CHROMOSOME_RULES)
 _engine.add_abnormality_rules(ALL_ABNORMALITY_RULES)
+_engine.add_karyotype_rules(ALL_CELL_LINE_RULES)
 
 
 def validate_karyotype(karyotype: str) -> ValidationResult:

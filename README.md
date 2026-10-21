@@ -42,7 +42,13 @@ ISCN 2024 grammar covered:
 - Structural rearrangements: `del`, `dup`, `inv`, `t` (translocation), `ins` (insertion).
 - Specialized rearrangements: `i` (isochromosome), `idic` (isodicentric), `der` (derivative), `dic` (dicentric), `r` (ring), `rob` (Robertsonian), `trp` (triplication).
 - Marker chromosomes: `mar`.
-- Uncertainty (`?`), inheritance suffixes (`mat`, `pat`, `dn`), mosaicism (cell lines split on `/`).
+- Uncertainty (`?`), inheritance suffixes (`mat`, `pat`, `dn`), mosaicism (`/`),
+  optional `mos`/`chi` prefixes, and recipient/donor groups (`//`).
+- Every cell line receives the implemented rules. Multiple-line validation
+  requires positive bracketed metaphase counts, puts normal lines last within
+  each recipient/donor group, and checks normal XX/XY size and equal-count order.
+  Errors identify the cell line. Ordering multiple abnormal clones, resolving
+  clone shorthand, and confirming donor identity still need manual review.
 
 ## ISCN 2024 reference
 
@@ -66,3 +72,10 @@ python3 -m unittest discover tests
 ## License
 
 MIT — see `LICENSE`.
+
+## Validation coverage
+
+Use `get_validation_coverage(result.parsed)` alongside `validate_karyotype()`.
+Passing implemented checks does not establish complete ISCN compliance. The
+[notation coverage guide](NOTATION_COVERAGE.md) documents routine counts, clone
+references, the bundled UCSC band catalogue, and unsupported or partial notation.
