@@ -11,7 +11,7 @@ def resolve_clone_reference(ast: KaryotypeAST, preceding: list[CellLine]) -> Non
     token = ast.sex_chromosomes
     if not re.match(r"^(idem|sl|sdl)", token):
         return
-    match = re.fullmatch(r"(idem|sl|sdl[1-9][0-9]*|sdl)(?:[x×]([0-9]+))?", token)
+    match = re.fullmatch(r"(idem|sl[1-9][0-9]*|sl|sdl[1-9][0-9]*|sdl)(?:[x×]([0-9]+))?", token)
     if not match:
         raise ParseError(f"Unsupported clone reference '{token}'; spell out this cell line")
     base = match[1]
@@ -26,8 +26,13 @@ def resolve_clone_reference(ast: KaryotypeAST, preceding: list[CellLine]) -> Non
     if (base == "idem" and uses_sl) or (base != "idem" and uses_idem):
         raise ParseError("Do not mix idem and sl/sdl clone references")
     sidelines = [line for line in preceding if line.reference and not line.reference.token.startswith("idem")]
+    stemlines = [line for line in preceding if not line.reference]
     reference = preceding[0]
     if base.startswith("sdl"):
+        if len(stemlines) > 1:
+            raise ParseError(
+                "Sideline references with multiple stemlines require explicit restatement; spell out this cell line"
+            )
         if base == "sdl" and len(sidelines) != 1:
             raise ParseError("Unnumbered sdl clone reference is absent or ambiguous; use sdlN")
         if base != "sdl" and len(base[3:]) > len(str(len(sidelines))):
@@ -36,7 +41,11 @@ def resolve_clone_reference(ast: KaryotypeAST, preceding: list[CellLine]) -> Non
         if index >= len(sidelines):
             raise ParseError(f"Clone reference '{token}' has no preceding sideline")
         reference = sidelines[index]
-    elif any(not line.reference for line in preceding[1:]):
+    elif base.startswith("sl") and base != "sl":
+        if len(base[2:]) > len(str(len(stemlines))) or int(base[2:]) > len(stemlines):
+            raise ParseError(f"Clone reference '{token}' has no preceding stemline")
+        reference = stemlines[int(base[2:]) - 1]
+    elif base == "sl" and len(stemlines) > 1:
         raise ParseError(f"Clone reference '{token}' is ambiguous after an independent clone")
     if reference.composite or (ast.modifiers and ast.modifiers.composite is not None):
         raise ParseError("Composite groups cannot use clone references; spell out each group")

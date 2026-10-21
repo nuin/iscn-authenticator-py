@@ -62,6 +62,6 @@ def get_validation_coverage(ast: KaryotypeAST | None) -> dict:
         "level": "unparsed" if ast is None else "partial" if notes else "supported",
         "notes": [{"code": code, "message": message} for code, message in notes.items()],
         "reference": "ISCN 2024",
-        "rule_version": "2026-10-20.1",
+        "rule_version": "2026-10-20.2",
         "band_reference": "UCSC hg38 cytoBand",
     }
