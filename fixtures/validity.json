@@ -309,6 +309,18 @@
     {
       "input": "47,XX,+8[cp5]/47,XY,+9[5]/48,sl2,+10[5]",
       "note": "Composite group does not renumber a usable subsequent source"
+    },
+    {
+      "input": "47,XX,+8[5]/48,sl1,+9[5]/48,XX,+10,+11[5]/49,sl2,+12[5]",
+      "note": "Explicit descendant leaves one unambiguous new stemline source"
+    },
+    {
+      "input": "47,XX,+8[5]/47,XX,+9[5]/48,sl2,+10[5]/47,XX,+11[5]/48,sl3,+12[5]",
+      "note": "A third stemline is established after the second"
+    },
+    {
+      "input": "47,XX,+8[5]/47,XX,+9[5]/48,sl2,+10[5]/47,XX,+11[5]/47,XX,+12[5]/48,sl2,+13[5]",
+      "note": "An established source stays fixed after further fully written lines"
     }
   ],
   "invalid": [
@@ -643,6 +655,14 @@
     {
       "input": "47,XX,+8[5]/48,sl1,+9[5]/49,idem,+10[5]",
       "note": "Numbered stemline style cannot mix with idem"
+    },
+    {
+      "input": "47,XX,+8[5]/48,XX,+8,+9[5]/48,XX,+10,+11[5]/49,sl2,+12[5]",
+      "note": "Fully written descendant cannot silently shift another stemline"
+    },
+    {
+      "input": "47,XX,+8[5]/47,XX,+9[5]/47,XX,+11[5]/48,sl3,+12[5]",
+      "note": "Skipped numbering cannot guess multiple unwritten family labels"
     }
   ]
 }

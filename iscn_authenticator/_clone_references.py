@@ -7,6 +7,24 @@ from iscn_authenticator._errors import ParseError
 from iscn_authenticator.models import CellLine, CloneReference, KaryotypeAST
 
 
+def _numbered_stemline(index: int, token: str, preceding: list[CellLine]) -> CellLine:
+    established = {1: preceding[0]}
+    last = 1
+    for line in preceding:
+        numbered = re.fullmatch(r"sl([1-9][0-9]*)(?:[x×][0-9]+)?", line.reference.token) if line.reference else None
+        if numbered and line.reference:
+            number = int(numbered[1])
+            established[number] = preceding[line.reference.cell_line - 1]
+            last = max(last, number)
+    if index in established:
+        return established[index]
+    last_position = next(position for position, line in enumerate(preceding) if line is established[last])
+    candidates = [line for line in preceding[last_position + 1:] if not line.reference]
+    if index != last + 1 or len(candidates) != 1:
+        raise ParseError(f"Clone reference '{token}' is ambiguous among fully written lines; spell out this cell line")
+    return candidates[0]
+
+
 def resolve_clone_reference(ast: KaryotypeAST, preceding: list[CellLine]) -> None:
     token = ast.sex_chromosomes
     if not re.match(r"^(idem|sl|sdl)", token):
@@ -44,12 +62,13 @@ def resolve_clone_reference(ast: KaryotypeAST, preceding: list[CellLine]) -> Non
     elif base.startswith("sl") and base != "sl":
         if len(base[2:]) > len(str(len(stemlines))) or int(base[2:]) > len(stemlines):
             raise ParseError(f"Clone reference '{token}' has no preceding stemline")
-        reference = stemlines[int(base[2:]) - 1]
+        reference = _numbered_stemline(int(base[2:]), token, preceding)
     elif base == "sl" and len(stemlines) > 1:
         raise ParseError(f"Clone reference '{token}' is ambiguous after an independent clone")
     if reference.composite or (ast.modifiers and ast.modifiers.composite is not None):
         raise ParseError("Composite groups cannot use clone references; spell out each group")
-    ast.reference = CloneReference(token, preceding.index(reference) + 1)
+    source_position = next(position for position, line in enumerate(preceding, 1) if line is reference)
+    ast.reference = CloneReference(token, source_position)
     ast.changes = ast.abnormalities
     adjusted = expand_clone(ast, reference, multiplier)
     if multiplier != 1:
